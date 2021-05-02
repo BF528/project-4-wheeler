@@ -1,0 +1,33 @@
+
+
+#!/bin/bash -l
+
+#$ -P bf528
+#$ -cwd
+#$ -j y
+#$ -pe mpi_16_tasks_per_node 16
+
+echo "Running job $JOB_ID"
+echo "Started: $(date +%F)"
+echo "Running in directory: $PWD"
+
+# your commands here
+cd /projectnb/bf528/users/wheeler/project_4
+
+module load miniconda
+conda activate project_4
+
+salmon_index_directory=/projectnb/bf528/users/wheeler/project_4/samples/salmon_index
+FASTQ_1=/projectnb/bf528/project_4_scrnaseq/fastq/SRR3879604/SRR3879604_2.fastq.gz
+FASTQ_2=/projectnb/bf528/project_4_scrnaseq/fastq/SRR3879605/SRR3879605_2.fastq.gz
+FASTQ_3=/projectnb/bf528/project_4_scrnaseq/fastq/SRR3879606/SRR3879606_2.fastq.gz
+bc_1=/projectnb/bf528/project_4_scrnaseq/fastq/SRR3879604/SRR3879604_1_bc.fastq.gz
+bc_2=/projectnb/bf528/project_4_scrnaseq/fastq/SRR3879605/SRR3879605_1_bc.fastq.gz
+bc_3=/projectnb/bf528/project_4_scrnaseq/fastq/SRR3879606/SRR3879606_1_bc.fastq.gz
+whitelist=/projectnb/bf528/users/wheeler/project_4/samples/combined_whitelist.txt
+tgMap=/projectnb/bf528/users/wheeler/project_4/samples/gencode.v37.transcripts.tgmap.tsv
+output=/projectnb/bf528/users/wheeler/project_4/samples/salmon_alevin_output
+
+salmon alevin --end 5 --barcodeLength 19 --umiLength 6 -l ISR -1 $bc_1 $bc_2 $bc_3 -2 $FASTQ_1 $FASTQ_2 $FASTQ_3 -i $salmon_index_directory -p 16 -o $output --tgMap $tgMap --whitelist $whitelist
+
+echo "Job finished: $(date +%F)"
