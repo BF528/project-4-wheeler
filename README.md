@@ -159,7 +159,7 @@ UMI counts matrix for the 51 years old female donor samples (SRR3879604, SRR3879
 
 <strong>Curator:</strong> Vishala Mishra (continue to be absent) <br>
 <strong>Programmer:</strong> Reina Chau (RC-88)<br>
-<strong>Analyst:</strong> Ariel Xue (arial208x) J<br>
+<strong>Analyst:</strong> Ariel Xue (arial208x)<br>
 <strong>Biologist:</strong> Jessica Fetterman (jessicalfetterman)<br>
 
 <br><br>
