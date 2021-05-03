@@ -83,7 +83,7 @@ The Seurat object we used was first normalized with method LogNormalize in order
 
 <b>Figure 10.</b> Heatmap of log normalized UMI counts for the top 2 marker genes in each cluster.
 
-In order to identify pathways that were enriched by cell cluster, the differentially expressed genes for each cell cluster were filtered based upon a fold change >0 and an adjusted p-value of <0.05 and the resulting gene lists put into Metascape. The top pathways enriched for each cluster are presented in <b>Table X</b>. Gene enrichment using all of the differentially expressed genes defining each cluster resulted in very similar top enriched pathways as the filtered differentially expressed genes, which likely reflects the greater contribution of genes with higher fold changes and that are significant after adjusting for multiple testing driving the enrichment scores.
+In order to identify pathways that were enriched by cell cluster, the differentially expressed genes for each cell cluster were filtered based upon a fold change >0 and an adjusted p-value of <0.05 and the resulting gene lists put into Metascape. The top pathways enriched for each cluster are presented in <b>Table 3</b>. Gene enrichment using all of the differentially expressed genes defining each cluster resulted in very similar top enriched pathways as the filtered differentially expressed genes, which likely reflects the greater contribution of genes with higher fold changes and that are significant after adjusting for multiple testing driving the enrichment scores.
 
 <b>Table 3</b>: Gene Enrichment by Cluster
 <img src="go_1.png"></img>
