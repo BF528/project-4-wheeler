@@ -137,6 +137,8 @@ Despite using multiple methods to classify the cell types for the clusters in th
 
 11. Satija R, Farrell JA, Gennert D, Schier AF, Regev A (2015). “Spatial reconstruction of single-cell gene expression data.” Nature Biotechnology, 33, 495-502. doi: 10.1038/nbt.3192, https://doi.org/10.1038/nbt.3192.
 
+12. 	Vincent D Blondel et al J. Fast unfolding of communities in large networks. Stat. Mech. (2008) P10008
+
 # Resources
 
 ### Code
@@ -150,6 +152,8 @@ Despite using multiple methods to classify the cell types for the clusters in th
 <b>data_curator.R</b> is an R script that runs the analysis for data curator and programmer parts such as doing quality control on the UMI count matrix, PCA of normalized feature expression values and cell clustering with KNN. It is stored at <b>/projectnb/bf528/users/wheeler/project_4</b>
 
 <b>biologist_DEGs.R</b> is an R script that filters the differentially expressed genes for each individual cluster based upon a log fold change greater than 0 and adjusted p-value of less than 0.05. The script also prints the list of filtered genes for each cluster on a new line to make it easy to paste into gene enrichment tools. It is stored at <b>/projectnb/bf528/users/wheeler/project_4</b>
+
+<b>analyst.R</b> is an R script that performed for marker genes, projection, and heatmap. It is stored at <b>/projectnb/bf528/users/wheeler/project_4/Analyst folder</b>
 
 ### Output 
 
