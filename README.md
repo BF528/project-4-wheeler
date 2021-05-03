@@ -70,7 +70,8 @@ The Seurat object we used was first normalized with method LogNormalize in order
 
 <img src="table_2.png"></img>
 
-<img src="figure_8.png"></img>
+<img src="figure_8_1.png"></img>
+<img src="figure_8_2.png"></img>
 
 <b>Figure 8.</b> UMAPs for each known marker gene showing the distribution of its expression in different clusters. The darker the blue, the greater the expression of the marker gene.
 
