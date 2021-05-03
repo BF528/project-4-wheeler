@@ -136,8 +136,8 @@ Despite using multiple methods to classify the cell types for the clusters in th
 10. Butler A, Hoffman P, Smibert P, Papalexi E, Satija R (2018). “Integrating single-cell transcriptomic data across different conditions, technologies, and species.” Nature Biotechnology, 36, 411-420. doi: 10.1038/nbt.4096, https://doi.org/10.1038/nbt.4096.
 
 11. Satija R, Farrell JA, Gennert D, Schier AF, Regev A (2015). “Spatial reconstruction of single-cell gene expression data.” Nature Biotechnology, 33, 495-502. doi: 10.1038/nbt.3192, https://doi.org/10.1038/nbt.3192.
-
-12. 	Vincent D Blondel et al J. Fast unfolding of communities in large networks. Stat. Mech. (2008) P10008
+ 
+12. Vincent D Blondel et al J. Fast unfolding of communities in large networks. Stat. Mech. (2008) P10008
 
 # Resources
 
