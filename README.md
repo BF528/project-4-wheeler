@@ -5,13 +5,13 @@ This repository is built to study the single cell RNA-seq analysis of pancreatic
 
 # Samples
 
-In this study by Baron et al, single cell sequencing was performed on approximately 10,000 human pancreatic cells collected at autopsy (N=4 donors) and approximately 10,000 murine pancreatic cells from 2 different mouse strains using inDrop.1, 4 inDrop encapsulates each of the individual cells within a single droplet containing all components needed for reverse transcription, converting the RNA to cDNA.4 Paired-end sequencing was performed with an Illumina Hiseq 2500 with an average of 100,000 reads per cell. 
+In this study by Baron et al, single cell sequencing was performed on approximately 10,000 human pancreatic cells collected at autopsy (N=4 donors) and approximately 10,000 murine pancreatic cells from 2 different mouse strains using inDrop. inDrop encapsulates each of the individual cells within a single droplet containing all components needed for reverse transcription, converting the RNA to cDNA.4 Paired-end sequencing was performed with an Illumina Hiseq 2500 with an average of 100,000 reads per cell. 
 
 In our analysis of the samples, in order to access a more convenient format for the barcode of each cell and UMIs of each transcript, 13 human single cell RNA-seq samples obtained from four donors were provided with preprocessed sequencing libraries. The barcodes in these samples were padded to be exactly 19 bases + 6 UMI bases = 25 bases. Out of the 13 given samples, we further investigated the samples from a 51 year old female donor (SRR3879604, SRR3879605, and SRR3879606) and performed cell-by-cell quantification of the UMI counts. 
 
 # Methods
 
-We used salmon alevin to map and quantify the reads, which we filtered for XXX. We used t-SNE to evaluate how the cells clustered based upon their transcriptomes, identified the differentially expressed genes that defined the clusters using K-nearest neighborhood (KNN) and assessed their biological significance with DAVID.
+We used salmon alevin to map and quantify the reads after filtering out barcodes with low frequency counts. We further performed quality control on the quantified reads using Seurat package from Bioconductor and excluded low-quality cells and genes from downstream analysis. The gene expression measurements were normalized and principal components analysis (PCA) was performed to identity the dimensionality of the single-cell dataset. We then used UMAP to evaluate how the cells clustered based upon their transcriptomes and identified the differentially expressed genes that defined the clusters using K-nearest neighborhood (KNN). Lastly, we assessed the biological significance of the differentially expressed genes in each cell cluster with Metascape.
 
 # Findings
 
@@ -51,9 +51,40 @@ Once we knew the dimensionality of the data (15 PCs), we calculated the Euclidea
 
 <b>Figure 6</b>:  Relative proportions of cell numbers identified for each of the 10 communities using K-nearest neighborhood algorithm.
 
-In order to identify pathways that were enriched by cell cluster, the differentially expressed genes for each cell cluster were filtered based upon a fold change >0 and an adjusted p-value of <0.05 and the resulting gene lists put into Metascape. The top pathways enriched for each cluster are presented in <b>Table X</b>. Gene enrichment using all of the differentially expressed genes defining each cluster resulted in very similar top enriched pathways as the filtered differentially expressed genes, which likely reflects the greater contribution of genes with higher fold changes and that are significant after adjusting for multiple testing driving the enrichment scores. 
+The Seurat package was further utilized to identify the differentially expressed genes defining each of the 13 clusters provided in the RDS file.7 The command FindAllMarkers was used for the loaded Seurat object with the parameters for minimum gene expression percentage detected of 0.25 and a minimum average log2 fold change of 0.25. As the log2 fold change refers to the log-ratio of a gene’s average of 1.19 fold change in the cluster compared to the rest of the cells, 19% is considered an appropriate threshold for defining significance in a large data set. After testing several potential thresholds for log2 fold change, 0.25 could effectively assign cell types to each cluster without filtering out significant markers. This command compared genes in each cluster with the rest of the clusters, identifying 6,487 DEGs as potential gene markers for all clusters. The top 2 DEGs with highest log2 fold change for each cluster were reported as cluster-defining genes in Table 1. The top 10 DEGs with highest log2 fold change were shown via command DoHeatmap in Figure 7.
 
-<b>Table 2</b>: Gene Enrichment by Cluster
+<b>Table 1</b>: Top 2 gene markers for each cluster with highest log2 fold change.
+
+<img src="table_1.png"></img>
+
+<img src="figure_7.png"></img>
+
+<b>Figure 7.</b> Top 10 gene markers with the highest log2 fold change for each of the 12 cell clusters. The X axis is cluster ID (also represented by the blocks of color) and the Y axis are the gene names. 
+
+Labeling the Cell Clusters Based Upon Expression of Marker Genes
+Baron et al provided a list of identified cell types with their respective markers in their report (Table 2), and this list is referred here for the cell type assignment as well.3 Based upon the assumption that a gene with a log2FC larger than 0.25 is considered as a marker gene, we further assumed that if we find one cell type’s known gene marker in the DEG list with minimum log2FC of 0.25 detected above, the corresponding cluster(s) could be labeled as such cell type. To implement this assumption, each known marker was searched in the previously obtained DEG list and then all of the clusters expressing the gene markers were labeled with the corresponding cell type. In order to the distribution of the gene markers, UMAP figures are produced for each marker to help determine cell types (Figure 8). The UMAPs show that some known markers are highly expressed in multiple clusters while some other markers show low expression in all clusters. This is consistent with the direct search in the marker gene list, and the final assigning results are recorded in Table 2 - If one cluster contains multiple known markers, it will be labeled with multiple cell types; Similarly, if one known marker is found in multiple clusters, all these clusters will be labeled with the same cell type; If a known marker is not found in any of the clusters, it will be reported as none.
+The results show that cluster 0 is a combination of delta and gamma cells and cluster 3 is a combination of delta and acinar cells. No clusters for the cell types of epsilon, quiescent stellate, activated stellate, endothelial, cytotoxic, mast were found (Table 2). UMAP was used to visualize the clustered cell with labeled cell types (Figure 9) except for cluster 7 and 9 because there are no known markers found (Table 2) and their cell types remained to be discussed. 
+The Seurat object we used was first normalized with method LogNormalize in order to obtain log normalized UMI counts, and then Figure 10 was made to show the heatmap of log normalized UMI counts for the top 2 marker genes of each cluster, the corresponding marker for each cluster is also shown in Table 1. This heatmap of UMI counts does not clearly suggest distinct cell types, which is consistent with Figure 7 using log2FC as expressions, because some markers are highly expressed in multiple clusters while some markers could not represent the whole cluster well. For example, GCG as one of the top 2 marker genes in cluster 4, showed high values for UMI counts in many other clusters such as cluster 0, 2, 3, 8, 10, 11. Figure 10 also shows that the top 2 marker genes in cluster 0 (SP100 and PRRG3) with highest log2FC could not fully represent the whole clusters because only part of the UMI counts show high expression in this cluster. Another problem it reflects is the top 2 marker genes in cluster 2 (FN1, COL1A1) actually have much lower expression levels compared to other clusters’ markers in cluster 2, such as SP100 and GCG. At the same time, FN1 and COL1A1 have much higher expression in cluster 9 (log2FC of 3.77 and 4.49 respectively) compared to that in cluster 2 (log2FC of 1.95 and 1.63 respectively). Due to the definition of marker gene was solely on differential expression conveyed by log2FC, many problems as mentioned above appeared and these explanations and interpretations will be discussed later. 
+
+<b>Table 2</b>: Known markers for each cell type and the corresponding clusters identified.
+
+<img src="table_2.png"></img>
+
+<img src="figure_8.png"></img>
+
+<b>Figure 8.</b> UMAPs for each known marker gene showing the distribution of its expression in different clusters. The darker the blue, the greater the expression of the marker gene.
+
+<img src="figure_9.png"></img>
+
+<b>Figure 9.</b> UMAP for clustered cells with labeled cell types. 7 and 9 are still cluster IDs which indicate that they are not yet able to be labeled by known markers.
+
+<img src="figure_10.png"></img>
+
+<b>Figure 10.</b> Heatmap of log normalized UMI counts for the top 2 marker genes in each cluster.
+
+In order to identify pathways that were enriched by cell cluster, the differentially expressed genes for each cell cluster were filtered based upon a fold change >0 and an adjusted p-value of <0.05 and the resulting gene lists put into Metascape. The top pathways enriched for each cluster are presented in <b>Table X</b>. Gene enrichment using all of the differentially expressed genes defining each cluster resulted in very similar top enriched pathways as the filtered differentially expressed genes, which likely reflects the greater contribution of genes with higher fold changes and that are significant after adjusting for multiple testing driving the enrichment scores.
+
+<b>Table 3</b>: Gene Enrichment by Cluster
 <img src="go_1.png"></img>
 <img src="go_2.png"></img>
 <img src="go_3.png"></img>
